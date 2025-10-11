@@ -1,106 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Form</title>
   <style>
+    /* --- Basic Page Styling --- */
     body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
+      font-family: "Poppins", sans-serif;
+      background: #f5f7fb;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       margin: 0;
     }
+
+    /* --- Form Container --- */
     .contact-form {
       background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       width: 100%;
       max-width: 500px;
     }
+
     .contact-form h2 {
       text-align: center;
-      margin-bottom: 1rem;
       color: #333;
+      margin-bottom: 20px;
     }
-    .form-group {
-      margin-bottom: 1rem;
-    }
+
+    /* --- Input Fields --- */
     label {
       display: block;
-      margin-bottom: 0.4rem;
-      font-weight: bold;
+      margin-bottom: 6px;
+      font-weight: 500;
       color: #222;
     }
-    input, textarea {
+
+    input,
+    textarea {
       width: 100%;
-      padding: 0.6rem;
+      padding: 10px 12px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border-color 0.2s;
     }
-    input:focus, textarea:focus {
-      border-color: #007bff;
+
+    input:focus,
+    textarea:focus {
+      border-color: #6c63ff;
       outline: none;
     }
-    .error {
-      color: red;
-      font-size: 0.9rem;
-      margin-top: 0.3rem;
+
+    textarea {
+      resize: vertical;
+      height: 120px;
     }
+
+    /* --- Validation Feedback --- */
+    .error {
+      color: #ff4d4d;
+      font-size: 13px;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    /* --- Submit Button --- */
     button {
       width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      font-weight: bold;
-      background: #007bff;
+      padding: 12px;
+      background-color: #6c63ff;
       color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: background-color 0.2s;
     }
+
     button:hover {
-      background: #0056b3;
+      background-color: #5848e1;
     }
-    @media (max-width: 600px) {
+
+    /* --- Responsive --- */
+    @media (max-width: 480px) {
       .contact-form {
-        padding: 1.5rem;
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <form class="contact-form" id="contactForm" method="POST" action="#">
+  <form class="contact-form" id="contactForm" method="POST" novalidate>
     <h2>Contact Us</h2>
 
-    <div class="form-group">
-      <label for="fullname">Full Name *</label>
-      <input type="text" id="fullname" name="fullname" required>
-      <div class="error" id="nameError"></div>
-    </div>
+    <label for="fullname">Full Name *</label>
+    <input type="text" id="fullname" name="fullname" required />
+    <div class="error" id="nameError">Full name is required.</div>
 
-    <div class="form-group">
-      <label for="email">Email Address *</label>
-      <input type="email" id="email" name="email" required>
-      <div class="error" id="emailError"></div>
-    </div>
+    <label for="email">Email Address *</label>
+    <input type="email" id="email" name="email" required />
+    <div class="error" id="emailError">Please enter a valid email address.</div>
 
-    <div class="form-group">
-      <label for="phone">Phone Number (optional)</label>
-      <input type="tel" id="phone" name="phone" pattern="^[0-9]{10}$" placeholder="1234567890">
-      <div class="error" id="phoneError"></div>
-    </div>
+    <label for="phone">Phone Number (optional)</label>
+    <input type="tel" id="phone" name="phone" placeholder="e.g. +91 9876543210" />
+    <div class="error" id="phoneError">Please enter a valid phone number.</div>
 
-    <div class="form-group">
-      <label for="message">Message *</label>
-      <textarea id="message" name="message" rows="5" required minlength="100"></textarea>
-      <div class="error" id="messageError"></div>
-    </div>
+    <label for="message">Message *</label>
+    <textarea id="message" name="message" required minlength="100"></textarea>
+    <div class="error" id="messageError">Message must be at least 100 characters long.</div>
 
     <button type="submit">Submit</button>
   </form>
@@ -108,43 +122,54 @@
   <script>
     const form = document.getElementById("contactForm");
 
-    form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
       let valid = true;
 
-      // Clear previous errors
-      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+      // Get form values
+      const name = document.getElementById("fullname").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      // Error elements
+      const nameError = document.getElementById("nameError");
+      const emailError = document.getElementById("emailError");
+      const phoneError = document.getElementById("phoneError");
+      const messageError = document.getElementById("messageError");
+
+      // Reset errors
+      nameError.style.display = emailError.style.display = phoneError.style.display = messageError.style.display = "none";
 
       // Validate Name
-      const name = document.getElementById("fullname").value.trim();
       if (name === "") {
-        document.getElementById("nameError").textContent = "Full Name is required.";
+        nameError.style.display = "block";
         valid = false;
       }
 
       // Validate Email
-      const email = document.getElementById("email").value.trim();
-      const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-      if (!emailPattern.test(email)) {
-        document.getElementById("emailError").textContent = "Enter a valid email address.";
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!email.match(emailPattern)) {
+        emailError.style.display = "block";
         valid = false;
       }
 
-      // Validate Phone (if entered)
-      const phone = document.getElementById("phone").value.trim();
-      if (phone !== "" && !/^[0-9]{10}$/.test(phone)) {
-        document.getElementById("phoneError").textContent = "Enter a valid 10-digit phone number.";
+      // Validate Phone (optional)
+      if (phone && !/^\+?\d{7,15}$/.test(phone)) {
+        phoneError.style.display = "block";
         valid = false;
       }
 
       // Validate Message
-      const message = document.getElementById("message").value.trim();
       if (message.length < 100) {
-        document.getElementById("messageError").textContent = "Message must be at least 100 characters.";
+        messageError.style.display = "block";
         valid = false;
       }
 
-      if (!valid) {
-        event.preventDefault(); // prevent form submission
+      // ✅ If valid, show success alert
+      if (valid) {
+        alert("Form submitted successfully!");
+        form.reset();
       }
     });
   </script>
