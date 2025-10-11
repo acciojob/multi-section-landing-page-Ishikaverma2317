@@ -1,177 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Form</title>
-  <style>
-    /* --- Basic Page Styling --- */
-    body {
-      font-family: "Poppins", sans-serif;
-      background: #f5f7fb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
+<form class="contact-form" id="contactForm" method="POST" novalidate>
+  <h2>Contact Us</h2>
 
-    /* --- Form Container --- */
-    .contact-form {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 500px;
-    }
+  <label for="fullname">Full Name *</label>
+  <input type="text" id="fullname" name="fullname" required />
+  <div class="error" id="nameError">Full name is required.</div>
 
-    .contact-form h2 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 20px;
-    }
+  <label for="email">Email Address *</label>
+  <input type="email" id="email" name="email" required />
+  <div class="error" id="emailError">Please enter a valid email address.</div>
 
-    /* --- Input Fields --- */
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-      color: #222;
-    }
+  <label for="phone">Phone Number (optional)</label>
+  <input type="tel" id="phone" name="phone" placeholder="e.g. +91 9876543210" />
+  <div class="error" id="phoneError">Please enter a valid phone number.</div>
 
-    input,
-    textarea {
-      width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-      transition: border-color 0.2s;
-    }
+  <label for="message">Message *</label>
+  <textarea id="message" name="message" required minlength="100"></textarea>
+  <div class="error" id="messageError">Message must be at least 100 characters long.</div>
 
-    input:focus,
-    textarea:focus {
-      border-color: #6c63ff;
-      outline: none;
-    }
-
-    textarea {
-      resize: vertical;
-      height: 120px;
-    }
-
-    /* --- Validation Feedback --- */
-    .error {
-      color: #ff4d4d;
-      font-size: 13px;
-      margin-top: -10px;
-      margin-bottom: 10px;
-      display: none;
-    }
-
-    /* --- Submit Button --- */
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #6c63ff;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    button:hover {
-      background-color: #5848e1;
-    }
-
-    /* --- Responsive --- */
-    @media (max-width: 480px) {
-      .contact-form {
-        padding: 20px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <form class="contact-form" id="contactForm" method="POST" novalidate>
-    <h2>Contact Us</h2>
-
-    <label for="fullname">Full Name *</label>
-    <input type="text" id="fullname" name="fullname" required />
-    <div class="error" id="nameError">Full name is required.</div>
-
-    <label for="email">Email Address *</label>
-    <input type="email" id="email" name="email" required />
-    <div class="error" id="emailError">Please enter a valid email address.</div>
-
-    <label for="phone">Phone Number (optional)</label>
-    <input type="tel" id="phone" name="phone" placeholder="e.g. +91 9876543210" />
-    <div class="error" id="phoneError">Please enter a valid phone number.</div>
-
-    <label for="message">Message *</label>
-    <textarea id="message" name="message" required minlength="100"></textarea>
-    <div class="error" id="messageError">Message must be at least 100 characters long.</div>
-
-    <button type="submit">Submit</button>
-  </form>
-
-  <script>
-    const form = document.getElementById("contactForm");
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      let valid = true;
-
-      // Get form values
-      const name = document.getElementById("fullname").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const message = document.getElementById("message").value.trim();
-
-      // Error elements
-      const nameError = document.getElementById("nameError");
-      const emailError = document.getElementById("emailError");
-      const phoneError = document.getElementById("phoneError");
-      const messageError = document.getElementById("messageError");
-
-      // Reset errors
-      nameError.style.display = emailError.style.display = phoneError.style.display = messageError.style.display = "none";
-
-      // Validate Name
-      if (name === "") {
-        nameError.style.display = "block";
-        valid = false;
-      }
-
-      // Validate Email
-      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-      if (!email.match(emailPattern)) {
-        emailError.style.display = "block";
-        valid = false;
-      }
-
-      // Validate Phone (optional)
-      if (phone && !/^\+?\d{7,15}$/.test(phone)) {
-        phoneError.style.display = "block";
-        valid = false;
-      }
-
-      // Validate Message
-      if (message.length < 100) {
-        messageError.style.display = "block";
-        valid = false;
-      }
-
-      // ✅ If valid, show success alert
-      if (valid) {
-        alert("Form submitted successfully!");
-        form.reset();
-      }
-    });
-  </script>
-</body>
-</html>
+  <button type="submit">Submit</button>
+</form>
