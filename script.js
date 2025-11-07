@@ -1,53 +1,54 @@
-const form = document.getElementById("contactForm");
+const form = document.getElementById('contactForm');
+const successMessage = document.getElementById('successMessage');
 
-form.addEventListener("submit", (e) => {
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validatePhone(phone) {
+  return phone === '' || /^[0-9\-\+\s]{7,15}$/.test(phone);
+}
+
+form.addEventListener('submit', function (e) {
   e.preventDefault();
+
   let valid = true;
+  successMessage.textContent = '';
 
-  // Get values
-  const name = document.getElementById("fullname").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const message = document.getElementById("message").value.trim();
+  // Clear all error messages
+  document.querySelectorAll('.error-message').forEach(msg => msg.textContent = '');
 
-  // Errors
-  const nameError = document.getElementById("nameError");
-  const emailError = document.getElementById("emailError");
-  const phoneError = document.getElementById("phoneError");
-  const messageError = document.getElementById("messageError");
+  const name = form.name.value.trim();
+  const email = form.email.value.trim();
+  const phone = form.phone.value.trim();
+  const message = form.message.value.trim();
 
-  // Reset errors
-  nameError.style.display = emailError.style.display =
-    phoneError.style.display = messageError.style.display = "none";
-
-  // Name validation
-  if (name === "") {
-    nameError.style.display = "block";
+  // Full Name validation
+  if (!name) {
+    document.querySelector('#name + .error-message').textContent = 'Full name is required.';
     valid = false;
   }
 
   // Email validation
-  const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-  if (!email.match(emailPattern)) {
-    emailError.style.display = "block";
+  if (!validateEmail(email)) {
+    document.querySelector('#email + .error-message').textContent = 'Enter a valid email address.';
     valid = false;
   }
 
-  // Phone validation (optional)
-  if (phone && !/^\+?\d{7,15}$/.test(phone)) {
-    phoneError.style.display = "block";
+  // Phone validation
+  if (!validatePhone(phone)) {
+    document.querySelector('#phone + .error-message').textContent = 'Invalid phone format.';
     valid = false;
   }
 
   // Message validation
   if (message.length < 100) {
-    messageError.style.display = "block";
+    document.querySelector('#message + .error-message').textContent = 'Message must be at least 100 characters.';
     valid = false;
   }
 
-  // Success
   if (valid) {
-    alert("Form submitted successfully!");
+    successMessage.textContent = '✅ Your message has been submitted successfully!';
     form.reset();
   }
 });
